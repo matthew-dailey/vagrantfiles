@@ -14,6 +14,10 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "chef/centos-7.0"
 
+  # ssh properties
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
