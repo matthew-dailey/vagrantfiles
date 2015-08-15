@@ -9,6 +9,7 @@ git
 x11_stuff='
 xorg-x11-xauth
 libXtst
+libXrender
 '
 sudo yum install -y \
     $x11_stuff \
