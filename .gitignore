@@ -1,5 +1,5 @@
 *.swp
-/.vagrant
+.vagrant
 
 *.rpm
 *.tar.gz
