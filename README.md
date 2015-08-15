@@ -8,5 +8,6 @@ vagrant up
 vagrant ssh -- -Y
 
 # you are now in the VM
+git clone <my favorite java project>
 idea.sh &> idea.log &
 ```
