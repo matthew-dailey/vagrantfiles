@@ -1,7 +1,22 @@
 #!/bin/sh
 
 sudo yum update
-sudo yum install -y vim git
+
+devtools='
+vim
+git
+'
+x11_stuff='
+xorg-x11-xauth
+libXtst
+'
+sudo yum install -y \
+    $x11_stuff \
+    $devtools
+
+# Any files that we download manually, we'll move into /vagrant
+# so that we won't have to download them again if we rebuild
+# this image.
 
 # pull down Java and install it
 JDK_FILE=jdk-8u51-linux-x64.rpm
@@ -25,9 +40,32 @@ if ! [ -e /vagrant/$IDEA_FILE ] ; then
     mv $IDEA_FILE /vagrant/$IDEA_FILE
 fi
 tar xzvf /vagrant/$IDEA_FILE
+chown -R vagrant:vagrant idea-IC-*
 ln -sf idea-IC-* idea
+
+# install Maven
+MAVEN_FILE=apache-maven-3.3.3-bin.tar.gz
+if ! [ -e /vagrant/$MAVEN_FILE ] ; then
+    echo "Downloading $MAVEN_FILE"
+    wget http://mirror.reverse.net/pub/apache/maven/maven-3/3.3.3/binaries/$MAVEN_FILE
+    mv $MAVEN_FILE /vagrant/$MAVEN_FILE
+fi
+tar xzvf /vagrant/$MAVEN_FILE
+chown -R vagrant:vagrant apache-maven-*
+ln -sf apache-maven-* apache-maven
+
+# I won't manually install gradle because usually projects have the
+# gradle wrapper to install gradle for their project
 
 # setup vagrant users's PATH
 echo '
-export PATH=$PATH:$HOME/idea/bin
+maven_home=$HOME/apache-maven
+export PATH=$PATH:$maven_home/bin:$HOME/idea/bin
 ' >> ~vagrant/.bash_profile
+
+# if you have IntelliJ config/cache in /vagrant, copy them into place
+IDEA_CONFIG_DIR=.IdeaIC14
+if [ -e /vagrant/$IDEA_CONFIG_DIR ] ; then
+    cp /vagrant/$IDEA_CONFIG_DIR ~vagrant/
+    chown -R vagrant:vagrant ~vagrant/$IDEA_CONFIG_DIR
+fi
