@@ -2,22 +2,20 @@
 
 sudo yum update
 
-devtools='
-vim
-git
-'
-x11_stuff='
-xorg-x11-xauth
-libXtst
-libXrender
-'
-sudo yum install -y \
-    $x11_stuff \
-    $devtools
-
 # Any files that we download manually, we'll move into /vagrant
 # so that we won't have to download them again if we rebuild
 # this image.
+
+CHEF_FILE=chefdk-0.6.2-1.el7.x86_64.rpm
+if ! [ -e /vagrant/$CHEF_FILE ] ; then
+    echo "Downloading $CHEF_FILE"
+    wget https://opscode-omnibus-packages.s3.amazonaws.com/el/7/x86_64/$CHEF_FILE
+    mv $CHEF_FILE /vagrant/$CHEF_FILE
+fi
+rpm -ivh /vagrant/$CHEF_FILE
+
+# TODO: should put this as a 'provision' in the Vagrantfile
+chef-apply /vagrant/packages.rb
 
 # pull down Java and install it
 JDK_FILE=jdk-8u51-linux-x64.rpm
