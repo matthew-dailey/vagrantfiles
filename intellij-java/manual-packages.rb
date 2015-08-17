@@ -22,4 +22,7 @@ pkgs.each do |pkg|
 end
 
 # TODO: install rpms and untar the tgz files
+package 'jdk' do
+    source "/vagrant/#{JDK_FILE}"
+end
 # TODO: add idea.sh to path

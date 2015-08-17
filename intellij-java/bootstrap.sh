@@ -19,8 +19,8 @@ chef-apply /vagrant/packages.rb
 chef-apply /vagrant/manual-packages.rb
 
 # pull down Java and install it
-JDK_FILE=jdk-8u51-linux-x64.rpm
-sudo rpm -ivh /vagrant/$JDK_FILE
+#JDK_FILE=jdk-8u51-linux-x64.rpm
+#sudo rpm -ivh /vagrant/$JDK_FILE
 
 # install intellij community edition and put in path
 IDEA_FILE=ideaIC-14.1.4.tar.gz
