@@ -2,5 +2,6 @@
 .vagrant
 
 *.rpm
+*.deb
 *.tar.gz
 *.zip
