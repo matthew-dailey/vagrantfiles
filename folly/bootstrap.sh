@@ -28,13 +28,27 @@ git
 unzip
 '
 
+set -e
+
+# install dependencies
+sudo apt-get update
 sudo apt-get install -y \
-    $deps \
+    $folly_deps \
     $devtools
 
-mkdir /dev
-cd /dev && git clone https://github.com/facebook/folly.git
-cd /dev/folly/folly && \
+# setup workspace
+sudo mkdir -p /workspace 
+sudo chown vagrant:vagrant /workspace
+
+# clone folly
+cd /workspace && git clone https://github.com/facebook/folly.git
+
+# extract gtest into folly's test dir
+wget https://googletest.googlecode.com/files/gtest-1.7.0.zip -O /workspace/gtest-1.7.0.zip
+unzip /workspace/gtest-1.7.0.zip -d /workspace/folly/folly/test/
+
+# build, test, install
+cd /workspace/folly/folly && \
     autoreconf -ivf && \
     ./configure && \
     make && \
